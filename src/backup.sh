@@ -17,9 +17,11 @@ pg_dump --format=custom \
 timestamp=$(date +"%Y-%m-%dT%H:%M:%S")
 s3_uri_base="s3://${S3_BUCKET}/${S3_PREFIX}/${POSTGRES_DATABASE}_${timestamp}.dump"
 
-if [ -n "$PASSPHRASE" ]; then
+if [ -n "$GPG_PUBLIC_KEY" ]; then
   echo "Encrypting backup..."
-  gpg --symmetric --batch --passphrase "$PASSPHRASE" db.dump
+  gpg --import $GPG_PUBLIC_KEY
+  gpg --always-trust --encrypt --recipient webmaster@fodjan.de db.dump
+
   rm db.dump
   local_file="db.dump.gpg"
   s3_uri="${s3_uri_base}.gpg"
@@ -47,4 +49,8 @@ if [ -n "$BACKUP_KEEP_DAYS" ]; then
     --output text \
     | xargs -n1 -t -I 'KEY' aws $aws_args s3 rm s3://"${S3_BUCKET}"/'KEY'
   echo "Removal complete."
+fi
+
+if [ -n "$PING_UPTIME_URL" ]; then
+  wget --spider $PING_UPTIME_URL >/dev/null 2>&1
 fi
