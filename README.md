@@ -16,7 +16,8 @@ services:
     environment:
       SCHEDULE: '@weekly'     # optional
       BACKUP_KEEP_DAYS: 7     # optional
-      PASSPHRASE: passphrase  # optional
+      GPG_PUBLIC_KEY: /path/to/public.key  # optional
+      PING_UPTIME_URL: https://.... # optional uptimerobot heartbeat url
       S3_REGION: region
       S3_ACCESS_KEY_ID: key
       S3_SECRET_ACCESS_KEY: secret
@@ -30,10 +31,33 @@ services:
 
 - Images are tagged by the major PostgreSQL version supported: `11`, `12`, `13`, `14`, or `15`.
 - The `SCHEDULE` variable determines backup frequency. See go-cron schedules documentation [here](http://godoc.org/github.com/robfig/cron#hdr-Predefined_schedules). Omit to run the backup immediately and then exit.
-- If `PASSPHRASE` is provided, the backup will be encrypted using GPG.
+- If `GPG_PUBLIC_KEY` is provided, the backup will be encrypted using GPG.
 - Run `docker exec <container name> sh backup.sh` to trigger a backup ad-hoc.
 - If `BACKUP_KEEP_DAYS` is set, backups older than this many days will be deleted from S3.
 - Set `S3_ENDPOINT` if you're using a non-AWS S3-compatible storage provider.
+
+### IONOS Example ENV
+
+If you want to use ionos s3 storage, you need to set the following variables:
+
+```
+S3_SECRET_ACCESS_KEY=<your s3 secret>
+S3_ACCESS_KEY_ID=<your s3 access key>
+S3_REGION=s3-eu-central-1
+S3_ENDPOINT=https://s3-eu-central-1.ionoscloud.com
+S3_BUCKET=<your bucket name>
+```
+
+### postgres ssl configuration
+
+if your postgres server is using ssl, you need to set the following variables:
+
+```
+PGSSLMODE=require
+PGSSLKEY=/mnt/psql/postgres.key
+PGSSLCERT=/mnt/psql/postgres.crt
+```
+(please update the path to the certifcates).
 
 ## Restore
 > **WARNING:** DATA LOSS! All database objects will be dropped and re-created.
