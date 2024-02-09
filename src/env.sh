@@ -44,3 +44,5 @@ if [ -n "$S3_SECRET_ACCESS_KEY" ]; then
 fi
 export AWS_DEFAULT_REGION=$S3_REGION
 export PGPASSWORD=$POSTGRES_PASSWORD
+export AWS_RETRY_MODE="standard"
+export AWS_MAX_ATTEMPTS="5"
