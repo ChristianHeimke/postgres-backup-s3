@@ -39,10 +39,22 @@ fi
 if [ -n "$S3_ACCESS_KEY_ID" ]; then
   export AWS_ACCESS_KEY_ID=$S3_ACCESS_KEY_ID
 fi
+
 if [ -n "$S3_SECRET_ACCESS_KEY" ]; then
   export AWS_SECRET_ACCESS_KEY=$S3_SECRET_ACCESS_KEY
 fi
+
+if [ -n "$S3_MAX_ATTEMPTS" ]; then
+  export AWS_MAX_ATTEMPTS=$S3_MAX_ATTEMPTS
+else
+  export AWS_MAX_ATTEMPTS="8"
+fi
+
+if [ -n "$S3_RETRY_MODE" ]; then
+  export AWS_RETRY_MODE=$S3_RETRY_MODE
+else
+  export AWS_RETRY_MODE="standard"
+fi
+
 export AWS_DEFAULT_REGION=$S3_REGION
 export PGPASSWORD=$POSTGRES_PASSWORD
-export AWS_RETRY_MODE="standard"
-export AWS_MAX_ATTEMPTS="5"
