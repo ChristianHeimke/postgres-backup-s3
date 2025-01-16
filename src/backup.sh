@@ -14,6 +14,9 @@ pg_dump --format=custom \
         $PGDUMP_EXTRA_OPTS \
         > db.dump
 
+backup_size=$(du -h db.dump | cut -f1)
+echo "Backup created: size = $backup_size"
+
 timestamp=$(date +"%Y-%m-%dT%H:%M:%S")
 s3_uri_base="s3://${S3_BUCKET}/${S3_PREFIX}/${POSTGRES_DATABASE}_${timestamp}.dump"
 
