@@ -25,6 +25,9 @@ if [ -n "$GPG_PUBLIC_KEY" ]; then
   gpg --import $GPG_PUBLIC_KEY
   gpg --always-trust --encrypt --recipient webmaster@fodjan.de db.dump
 
+  encrypted_backup_size=$(du -h db.dump.gpg | cut -f1)
+  echo "Encrypted backup created: size = $encrypted_backup_size"
+
   rm db.dump
   local_file="db.dump.gpg"
   s3_uri="${s3_uri_base}.gpg"
