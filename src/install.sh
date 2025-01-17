@@ -12,8 +12,9 @@ apk add postgresql-client
 apk add gnupg
 
 apk add python3
-apk add py3-pip  # separate package on edge only
-pip3 install awscli==1.36.40
+apk add py3-pip
+pip install --upgrade pip
+pip install awscli==1.36.40
 
 # install go-cron
 apk add curl
