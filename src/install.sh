@@ -13,8 +13,8 @@ apk add gnupg
 
 apk add python3
 apk add py3-pip
-pip install --upgrade pip
-pip install awscli==1.36.40
+
+pip3 install awscli==1.36.40
 
 # install go-cron
 apk add curl
