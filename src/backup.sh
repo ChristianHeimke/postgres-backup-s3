@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 set -eu
 set -o pipefail
@@ -37,7 +37,9 @@ else
 fi
 
 echo "Uploading backup to $S3_BUCKET..."
+aws configure set default.s3.disable_multipart_trailing_checksum true
 aws $aws_args s3 cp "$local_file" "$s3_uri"
+
 rm "$local_file"
 
 echo "Backup complete."
