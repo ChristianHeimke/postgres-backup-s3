@@ -13,7 +13,7 @@ apk add gnupg
 
 apk add python3
 apk add py3-pip  # separate package on edge only
-pip3 install awscli==1.33.43
+pip3 install awscli==1.36.40
 
 # install go-cron
 apk add curl
